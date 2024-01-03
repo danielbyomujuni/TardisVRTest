@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://dj7rddww0cx6q"]
+
+[ext_resource type="Script" path="res://XROrigin3D.gd" id="1_w475d"]
+
+[sub_resource type="Environment" id="Environment_x8kx1"]
+
+[sub_resource type="PlaceholderMaterial" id="PlaceholderMaterial_85avt"]
+
+[sub_resource type="Gradient" id="Gradient_ywg7p"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wh8wm"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3jgt1"]
+width = 1000
+height = 1000
+seamless = true
+seamless_blend_skirt = 0.17
+color_ramp = SubResource("Gradient_ywg7p")
+noise = SubResource("FastNoiseLite_wh8wm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4vtr6"]
+next_pass = SubResource("PlaceholderMaterial_85avt")
+albedo_color = Color(0.0588235, 0.509804, 0, 1)
+roughness_texture = SubResource("NoiseTexture2D_3jgt1")
+
+[sub_resource type="Environment" id="Environment_3hx5j"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+transform = Transform3D(0.999999, -0.00113688, 0.000679197, 0.00113731, 0.999999, -0.000628564, -0.000678483, 0.000629334, 1, 0, 1.74409, 0)
+script = ExtResource("1_w475d")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+environment = SubResource("Environment_x8kx1")
+
+[node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 1.92983e-11, 5.82077e-11, 1.76215e-11, 1, -5.82077e-11, 0, 0, 1, 0, 0, 0)
+tracker = &"left_hand"
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/LeftHand"]
+radius = 0.1
+
+[node name="RightHand" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="XROrigin3D/RightHand"]
+radius = 0.1
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.759444, 0.712498, 0.0224781)
+size = Vector3(500, 1, 500)
+material = SubResource("StandardMaterial3D_4vtr6")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3hx5j")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.910604, 0.413279, 0, -0.413279, 0.910604, 0, 2.36395, 1.45143)
+light_energy = 7.95
+light_indirect_energy = 5.525
+shadow_enabled = true
